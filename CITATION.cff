@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it and the upstream Fastest-lap model."
+title: "RacingLine: kart racing line and lap-time optimization"
+authors:
+  - family-names: "Hazeyuh"
+repository-code: "https://github.com/Hazeyuh/RacingLine"
+license: MIT
+version: 0.1.0
+date-released: 2026-10-06

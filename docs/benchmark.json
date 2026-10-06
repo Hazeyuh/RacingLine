@@ -1,0 +1,46 @@
+{
+  "track": "Vendrell",
+  "engine": "Fastest-lap kart-6dof",
+  "runs": [
+    {
+      "id": "f0f5fb53133e",
+      "points": 120,
+      "laptime_s": 59.362917617824,
+      "solve_elapsed_s": 1.545213582998258,
+      "peak_rss_mb": 103.890625,
+      "iterations": 85,
+      "constraint_error": 2.41e-12,
+      "reference_point_boundary_excess_m": 5.777600620149315e-12
+    },
+    {
+      "id": "c6822a3b140e",
+      "points": 200,
+      "laptime_s": 59.88931733555169,
+      "solve_elapsed_s": 2.737460166001256,
+      "peak_rss_mb": 127.984375,
+      "iterations": 81,
+      "constraint_error": 3.54e-11,
+      "reference_point_boundary_excess_m": 3.816502669451438e-12
+    },
+    {
+      "id": "5afec44a3c95",
+      "points": 500,
+      "laptime_s": 60.302447526554744,
+      "solve_elapsed_s": 13.233210707996477,
+      "peak_rss_mb": 315.140625,
+      "iterations": 138,
+      "constraint_error": 1.49e-11,
+      "reference_point_boundary_excess_m": 4.646061313451355e-12
+    },
+    {
+      "id": "480638ba0ff4",
+      "points": 1000,
+      "laptime_s": 60.35258170234426,
+      "solve_elapsed_s": 36.960756666001544,
+      "peak_rss_mb": 549.203125,
+      "iterations": 148,
+      "constraint_error": 2.87e-12,
+      "reference_point_boundary_excess_m": 8.396838779844984e-12
+    }
+  ]
+}

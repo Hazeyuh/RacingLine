@@ -1,0 +1,45 @@
+{
+  "pairs": {
+    "scale": [
+      [
+        26,
+        627
+      ],
+      [
+        127,
+        627
+      ]
+    ],
+    "satellite_width": [
+      [
+        548,
+        320
+      ],
+      [
+        553,
+        354
+      ]
+    ],
+    "diagram_width": [
+      [
+        550,
+        419
+      ],
+      [
+        550,
+        463
+      ]
+    ]
+  },
+  "lengths_px": {
+    "scale": 101.0,
+    "satellite_width": 34.36568055487916,
+    "diagram_width": 44.0
+  },
+  "satellite_m_per_px": 0.24752475247524752,
+  "straight_width_m": 8.506356572989892,
+  "diagram_m_per_px": 0.1933262857497703,
+  "status": "image-measured-estimate",
+  "note": "比例尺 25 m；主直道在两图上测到路面边缘，已排除下方维修道与分隔岛。卫星图模糊，端点为图像估计，尚无现场尺寸复核。",
+  "endpoint_uncertainty_px": 3
+}

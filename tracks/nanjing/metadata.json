@@ -1,0 +1,74 @@
+{
+  "id": "nanjing",
+  "name": "南京引力卡丁车·聚宝山",
+  "track_length_m": 618.5484858543965,
+  "m_per_px": 0.1933262857497703,
+  "origin_px": [
+    431.99319222264415,
+    442.01473968111645
+  ],
+  "image_size": [
+    1000,
+    707
+  ],
+  "status": "image-derived-estimate",
+  "vehicle_envelope_m": 1.4,
+  "safety_margin_per_side_m": 0.1,
+  "inset_per_side_m": 0.8799999999999999,
+  "width_inset_per_side_m": 0.7999999999999999,
+  "discretization_guard_per_side_m": 0.08,
+  "minimum_corridor_width_m": 3.9076839530170795,
+  "calibration": {
+    "pairs": {
+      "scale": [
+        [
+          26,
+          627
+        ],
+        [
+          127,
+          627
+        ]
+      ],
+      "satellite_width": [
+        [
+          548,
+          320
+        ],
+        [
+          553,
+          354
+        ]
+      ],
+      "diagram_width": [
+        [
+          550,
+          419
+        ],
+        [
+          550,
+          463
+        ]
+      ]
+    },
+    "lengths_px": {
+      "scale": 101.0,
+      "satellite_width": 34.36568055487916,
+      "diagram_width": 44.0
+    },
+    "satellite_m_per_px": 0.24752475247524752,
+    "straight_width_m": 8.506356572989892,
+    "diagram_m_per_px": 0.1933262857497703,
+    "status": "image-measured-estimate",
+    "note": "比例尺 25 m；主直道在两图上测到路面边缘，已排除下方维修道与分隔岛。卫星图模糊，端点为图像估计，尚无现场尺寸复核。",
+    "endpoint_uncertainty_px": 3
+  },
+  "direction": "T1 → T17（由原图弯号与 T1 箭头推定）",
+  "boundary_revision": "manual-smooth-v2",
+  "maximum_coordinate_fold_repair_m": 0.0,
+  "boundary_sampling": "display rings sampled independently; nl/nr are normal intersections with the same corridor",
+  "kerb_policy": "红白路肩纳入道路，轮胎与隔离墙排除；可驾驶性仍待现场确认",
+  "export_method": "manual smooth road/kerb trace; Euclidean physical-road inset; native XML adapter",
+  "geometry_sha256": "1d923640cc9dd33e69f3074221349e4ac9a4797dec5983fef0341ae59046adc9",
+  "xml_sha256": "1e479380f0d7b035b64f1493e3037217d054270d8af6021e5fd6d06743213188"
+}

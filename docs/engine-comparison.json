@@ -1,0 +1,47 @@
+{
+  "engine": "honda-torque-v1",
+  "runs": [
+    {
+      "id": "e384facf213e",
+      "vehicle": "270cc",
+      "curve": "GX270",
+      "target_power_kw": 6.3,
+      "gear_ratio": 5.0,
+      "limit_rpm": 3000.0,
+      "laptime_s": 72.58763933719035,
+      "maximum_speed_kmh": 33.189124884103244,
+      "maximum_rpm": 3243.895430082591,
+      "maximum_engine_power_kw": 5.232009939187127,
+      "maximum_shaft_power_kw": 4.4430891004136885,
+      "elapsed_s": 23.20126408300348
+    },
+    {
+      "id": "bafca7b7610e",
+      "vehicle": "200cc",
+      "curve": "GX200",
+      "target_power_kw": 4.8,
+      "gear_ratio": 5.0,
+      "limit_rpm": 3600.0,
+      "laptime_s": 62.55301250531522,
+      "maximum_speed_kmh": 38.81158917363983,
+      "maximum_rpm": 3796.024739998457,
+      "maximum_engine_power_kw": 4.352099943321959,
+      "maximum_shaft_power_kw": 3.6974636644261456,
+      "elapsed_s": 37.714336499997444
+    },
+    {
+      "id": "268a31921c84",
+      "vehicle": "270cc",
+      "curve": "GX270",
+      "target_power_kw": 6.3,
+      "gear_ratio": 5.0,
+      "limit_rpm": 3600.0,
+      "laptime_s": 61.608011970344684,
+      "maximum_speed_kmh": 39.06097540937606,
+      "maximum_rpm": 3821.2191625933883,
+      "maximum_engine_power_kw": 5.983921421427126,
+      "maximum_shaft_power_kw": 5.083729225980234,
+      "elapsed_s": 35.90237666699977
+    }
+  ]
+}

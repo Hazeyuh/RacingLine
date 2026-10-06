@@ -1,0 +1,99 @@
+diff --git a/src/core/actuators/engine.h b/src/core/actuators/engine.h
+index 51417e7..c2a564d 100644
+--- a/src/core/actuators/engine.h
++++ b/src/core/actuators/engine.h
+@@ -49,6 +49,8 @@ class Engine
+     constexpr const scalar& gear_ratio() const { return _gear_ratio; }
+ 
+     const Timeseries_t& get_power() const { return _power; }
++    const Timeseries_t& get_engine_rpm() const { return _engine_rpm; }
++    const Timeseries_t& get_engine_power() const { return _engine_power; }
+ 
+  private:
+     std::string _path;
+@@ -56,6 +58,11 @@ class Engine
+     sPolynomial _p;
+ 
+     scalar _gear_ratio;
++    bool _rental_curve = false;
++    std::vector<scalar> _torque_coefficients;
++    scalar _reference_power = 1.0;
++    scalar _efficiency = 0.85, _limit_rpm = 3600.0, _clutch_rpm = 1800.0;
++    Timeseries_t _engine_rpm = 0.0, _engine_power = 0.0;
+     bool _direct_torque = true;
+     bool _only_max_power;
+ 
+diff --git a/src/core/actuators/engine.hpp b/src/core/actuators/engine.hpp
+index 4f26c63..490b0c5 100644
+--- a/src/core/actuators/engine.hpp
++++ b/src/core/actuators/engine.hpp
+@@ -27,6 +27,23 @@ inline Engine<Timeseries_t>::Engine(Xml_document& database, const std::string& p
+         _p = sPolynomial(speed,p,speed.size()-1,true);
+     } 
+ 
++    if (database.has_element(path+"rental-gear-ratio")) {
++        _rental_curve = true;
++        auto read = [&](const std::string& key) {
++            auto element = database.get_element(path+key);
++            const auto value = element.get_value(double());
++            element.set_attribute("__unused__", "false");
++            return value;
++        };
++        _gear_ratio = read("rental-gear-ratio");
++        _efficiency = read("rental-efficiency");
++        _limit_rpm = read("rental-limit-rpm");
++        _clutch_rpm = read("rental-clutch-rpm");
++        _reference_power = read("rental-reference-power");
++        auto coefficients = database.get_element(path+"rental-torque-coefficients");
++        _torque_coefficients = coefficients.get_value(std::vector<double>());
++        coefficients.set_attribute("__unused__", "false");
++    }
+     _direct_torque = false;
+ }
+ 
+@@ -37,6 +54,30 @@ inline Timeseries_t Engine<Timeseries_t>::operator()(const Timeseries_t throttle
+     if ( _direct_torque )
+         return throttle_percentage;
+ 
++    else if (_rental_curve) {
++        // Smooth phenomenological four-stroke torque curve and clutch slip.
++        // Retain AD dependence on axle speed throughout the optimization.
++        const Timeseries_t sync = angular_speed*_gear_ratio/RPM;
++        const Timeseries_t diff = sync-_clutch_rpm;
++        _engine_rpm = 0.5*(sync+_clutch_rpm+sqrt(diff*diff+100.0*100.0));
++        // Smoothly hold the official curve endpoints outside 2000--3600 rpm.
++        const Timeseries_t low = _engine_rpm-2000.0;
++        const Timeseries_t above_low = 2000.0+0.5*(low+sqrt(low*low+100.0));
++        const Timeseries_t high = above_low-3600.0;
++        const Timeseries_t curve_rpm = 3600.0+0.5*(high-sqrt(high*high+100.0));
++        const Timeseries_t x = (curve_rpm-2800.0)/800.0;
++        Timeseries_t torque = 0.0;
++        for (auto it=_torque_coefficients.rbegin(); it!=_torque_coefficients.rend(); ++it) torque = torque*x+*it;
++        torque *= _maximum_power/_reference_power;
++        const Timeseries_t z = (_engine_rpm-_limit_rpm)/100.0;
++        const Timeseries_t governor = 0.5*(1.0-z/sqrt(1.0+z*z));
++        const Timeseries_t c = diff/200.0;
++        const Timeseries_t coupling = 0.35+0.65*0.5*(1.0+c/sqrt(1.0+c*c));
++        const Timeseries_t shaft_torque = throttle_percentage*torque*governor*coupling*_gear_ratio*_efficiency;
++        _power = shaft_torque*angular_speed;
++        _engine_power = throttle_percentage*torque*governor*coupling*_engine_rpm*RPM;
++        return shaft_torque;
++    }
+     else if ( _only_max_power )
+     {
+         _power = throttle_percentage*(_maximum_power*1.0e3);
+diff --git a/src/core/chassis/axle_car_6dof.h b/src/core/chassis/axle_car_6dof.h
+index f45e05c..8163c96 100644
+--- a/src/core/chassis/axle_car_6dof.h
++++ b/src/core/chassis/axle_car_6dof.h
+@@ -380,6 +380,10 @@ class Axle_car_6dof : public Axle<Timeseries_t,std::tuple<Tire_left_t,Tire_right
+     {
+         return
+         {
++            {base_type::_name + ".engine.rpm", _engine.get_engine_rpm()},
++            {base_type::_name + ".engine.power", _engine.get_engine_power()},
++            {base_type::_name + ".shaft-power", _engine.get_power()},
++            {base_type::_name + ".axle-speed", _omega}
+         };
+     }
+ 

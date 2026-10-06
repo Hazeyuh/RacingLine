@@ -1,0 +1,11 @@
+.venv/
+upstream/
+runs/
+__pycache__/
+.DS_Store
+*.log
+赛道图片和卫星图对照/
+vehicles/sources/*.pdf
+tracks/nanjing/*.png
+docs/*.png
+docs/*.jpg

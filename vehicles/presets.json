@@ -1,0 +1,36 @@
+{
+  "200cc": {
+    "id": "200cc",
+    "name": "200cc 参考",
+    "power_kw": 4.8,
+    "kart_mass_kg": 100,
+    "driver_mass_kg": 70,
+    "source": "用户功率与质量估计；按约 60 km/h 速度观测校准传动比",
+    "engine_model": "honda-torque-v1",
+    "gear_ratio": 3.15,
+    "efficiency": 0.85,
+    "limit_rpm": 3600,
+    "clutch_rpm": 1800,
+    "rear_wheel_radius_m": 0.139,
+    "dynamics_source": "统一基础扭矩形状（GX200 近似）；按可编辑功率缩放",
+    "engine_curve": "GX200",
+    "vehicle_width_m": 1.4
+  },
+  "270cc": {
+    "id": "270cc",
+    "name": "270cc 参考",
+    "power_kw": 6.3,
+    "kart_mass_kg": 100,
+    "driver_mass_kg": 70,
+    "source": "用户功率与质量估计；按约 66 km/h 速度观测校准传动比",
+    "engine_model": "honda-torque-v1",
+    "gear_ratio": 2.86,
+    "efficiency": 0.85,
+    "limit_rpm": 3600,
+    "clutch_rpm": 1800,
+    "rear_wheel_radius_m": 0.139,
+    "dynamics_source": "统一基础扭矩形状（GX200 近似）；按可编辑功率缩放",
+    "engine_curve": "GX200",
+    "vehicle_width_m": 1.4
+  }
+}

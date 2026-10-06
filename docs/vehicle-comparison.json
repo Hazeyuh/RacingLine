@@ -1,0 +1,49 @@
+{
+  "track": "nanjing",
+  "points": 500,
+  "runs": [
+    {
+      "id": "73af06d76449",
+      "vehicle": {
+        "id": "200cc",
+        "name": "200cc",
+        "power_kw": 4.8,
+        "kart_mass_kg": 100.0,
+        "driver_mass_kg": 70.0,
+        "source": "用户提供的估计值",
+        "modified": false
+      },
+      "mass_kg": 170.0,
+      "laptime_s": 48.27707542923435,
+      "maximum_speed_on_lap_kmh": 73.05834370221065,
+      "elapsed_s": 31.0103322089999,
+      "validation": {
+        "finite": true,
+        "reference_point_boundary_excess_m": 5.975886452347368e-11,
+        "full_raceline_in_image_corridor": true
+      }
+    },
+    {
+      "id": "6f8b17cccc6b",
+      "vehicle": {
+        "id": "270cc",
+        "name": "270cc",
+        "power_kw": 6.3,
+        "kart_mass_kg": 100.0,
+        "driver_mass_kg": 70.0,
+        "source": "用户提供的估计值",
+        "modified": false
+      },
+      "mass_kg": 170.0,
+      "laptime_s": 46.789704789045736,
+      "maximum_speed_on_lap_kmh": 79.00079769808451,
+      "elapsed_s": 13.194516332998319,
+      "validation": {
+        "finite": true,
+        "reference_point_boundary_excess_m": 6.409406339002999e-11,
+        "full_raceline_in_image_corridor": true
+      }
+    }
+  ],
+  "delta_270_minus_200_s": -1.4873706401886153
+}

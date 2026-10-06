@@ -1,0 +1,42 @@
+{
+  "points": 500,
+  "rear_wheel_radius_m": 0.139,
+  "limit_rpm": 3600,
+  "efficiency": 0.85,
+  "runs": [
+    {
+      "run_id": "acf0e0a0acef",
+      "power_kw": 4.8,
+      "mass_kg": 170.0,
+      "gear_ratio": 3.15,
+      "base_curve": "GX200",
+      "straight_max_kmh": 59.72886826098212,
+      "first_hairpin_min_kmh": 28.804084816611407,
+      "maximum_rpm": 3628.6319574036497,
+      "laptime_s": 53.949641480276554,
+      "validation": {
+        "finite": true,
+        "reference_point_boundary_excess_m": 9.265122002943826e-11,
+        "full_raceline_in_image_corridor": true,
+        "full_raceline_in_width_corridor": true
+      }
+    },
+    {
+      "run_id": "34a2a5060401",
+      "power_kw": 6.3,
+      "mass_kg": 170.0,
+      "gear_ratio": 2.86,
+      "base_curve": "GX200",
+      "straight_max_kmh": 65.70338731870903,
+      "first_hairpin_min_kmh": 28.890368235299086,
+      "maximum_rpm": 3640.701012760577,
+      "laptime_s": 52.41873319374784,
+      "validation": {
+        "finite": true,
+        "reference_point_boundary_excess_m": 9.049783145087531e-11,
+        "full_raceline_in_image_corridor": true,
+        "full_raceline_in_width_corridor": true
+      }
+    }
+  ]
+}

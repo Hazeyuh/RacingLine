@@ -1,0 +1,11 @@
+{
+  "fastest-lap": "0660208aaeea956c9d833cb32a0ae6b4d959ecb9",
+  "lion": "e1e4ac06bcbf95e0aeaddcdebabc244e4df08a88",
+  "loggercpp": "94e402b6620796025e57178120a9614c97182fba",
+  "lapack": "1281d14c8279a76d8dd8707609766dc5cf03bb97",
+  "tinyxml": "8224e427b655b83dae5e2298f1e6919523a78737",
+  "ipopt": "1e71ba4eeef0514549587448123ea6fdcb2b0ccd",
+  "mumps": "1063386179a14b34bf762cdefca051606bd09fc4",
+  "cppad": "6856fdde535d2a7634a6fc36d8787a72166dce91",
+  "googletest": "988ea2c1798de7779f656df2281dd36d6039a17a"
+}

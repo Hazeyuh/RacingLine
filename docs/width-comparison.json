@@ -1,0 +1,25 @@
+{
+  "boundary_revision": "manual-smooth-v2",
+  "runs": [
+    {
+      "id": "1c74e335dcf5",
+      "width_m": 1.4,
+      "points": 500,
+      "laptime_s": 57.74064441965925,
+      "geometry_sha256": "1d923640cc9dd33e69f3074221349e4ac9a4797dec5983fef0341ae59046adc9",
+      "xml_sha256": "1e479380f0d7b035b64f1493e3037217d054270d8af6021e5fd6d06743213188",
+      "time_monotonic": true,
+      "full_width_corridor_valid": true
+    },
+    {
+      "id": "ab2718504885",
+      "width_m": 1.1,
+      "points": 500,
+      "laptime_s": 57.417056242696006,
+      "geometry_sha256": "1d923640cc9dd33e69f3074221349e4ac9a4797dec5983fef0341ae59046adc9",
+      "xml_sha256": "3f02c1fb8900e081672eb278d30d88ea84ec9b40215f7490c528dc6f0db2009c",
+      "time_monotonic": true,
+      "full_width_corridor_valid": true
+    }
+  ]
+}
