@@ -1,0 +1,43 @@
+{
+  "id": "tablet-demo",
+  "name": "手绘模板 · 椭圆",
+  "track_length_m": 209.68297522968476,
+  "m_per_px": 0.1,
+  "origin_px": [
+    1000.0,
+    450.0
+  ],
+  "image_size": [
+    1200,
+    900
+  ],
+  "status": "user-designed",
+  "vehicle_envelope_m": 1.4,
+  "safety_margin_per_side_m": 0.1,
+  "inset_per_side_m": 0.8799999999999999,
+  "width_inset_per_side_m": 0.7999999999999999,
+  "discretization_guard_per_side_m": 0.08,
+  "minimum_corridor_width_m": 6.2400019761155825,
+  "calibration": {
+    "points_px": [
+      [
+        100,
+        800
+      ],
+      [
+        300,
+        800
+      ]
+    ],
+    "length_m": 20,
+    "note": "设计比例：200 px = 20 m"
+  },
+  "direction": "按 centerline_px 点序行驶；第一个点为起终点",
+  "boundary_revision": "manual-smooth-v2",
+  "maximum_coordinate_fold_repair_m": 0.0,
+  "boundary_sampling": "display rings sampled independently; nl/nr are normal intersections with the same corridor",
+  "kerb_policy": "未单独设计路肩，不额外扩张道路",
+  "export_method": "manual smooth road/kerb trace; Euclidean physical-road inset; native XML adapter",
+  "geometry_sha256": "65a5a68b2d9f284880d911a91fd93f6873a9c5ffa0e2a48f6b861e38de1874d0",
+  "xml_sha256": "7e31ba13db9fa5acbea934905322413903b86b5a61990350a9e621289206a56b"
+}

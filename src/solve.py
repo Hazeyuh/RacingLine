@@ -46,7 +46,7 @@ def main(run):
     nr=np.interp(s,ts,fl.track_download_data('track','distance-right-boundary'),period=length)
     offset=np.array(result['road.lateral-displacement'])
     result['validation']=dict(finite=all(np.all(np.isfinite(v)) for v in result.values() if isinstance(v,list)),reference_point_boundary_excess_m=float(max(0.,np.max(offset-nr),np.max(-offset-nl))))
-    if key=='nanjing':
+    if (run/'geometry.json').exists() or key=='nanjing':
         from shapely.geometry import Polygon,LineString
         geometry=run/'geometry.json'
         if not geometry.exists():shutil.copyfile(ROOT/'tracks/nanjing/geometry.json',geometry)

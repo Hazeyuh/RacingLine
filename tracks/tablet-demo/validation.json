@@ -1,0 +1,11 @@
+{
+  "geometry_valid": true,
+  "closed": true,
+  "self_intersection": false,
+  "scale_m_per_px": 0.1,
+  "track_length_m": 209.68297522968476,
+  "minimum_center_corridor_width_m": 6.2400019761155825,
+  "native_solve_verified": true,
+  "points": 500,
+  "laptime_s": 11.978513670776396
+}

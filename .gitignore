@@ -9,3 +9,6 @@ vehicles/sources/*.pdf
 tracks/nanjing/*.png
 docs/*.png
 docs/*.jpg
+
+tracks/*/geometry-overlay.png
+tracks/*/source-assets/

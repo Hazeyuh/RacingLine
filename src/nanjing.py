@@ -1,13 +1,15 @@
 """Build each run's center-point corridor from the physical road and kart width."""
 import json,hashlib
+from pathlib import Path
 import numpy as np
 from scipy.interpolate import CubicSpline
 from shapely.geometry import Polygon,LineString,Point
 import xml.etree.ElementTree as ET
 from common import ROOT,UPSTREAM
 
-def track_for_width(width_m=1.4,margin_m=.1):
-    path=ROOT/'tracks/nanjing/geometry.json';raw=path.read_bytes();g=json.loads(raw)
+def track_for_width(width_m=1.4,margin_m=.1,track_folder=None):
+    folder=Path(track_folder) if track_folder else ROOT/'tracks/nanjing'
+    path=folder/'geometry.json';raw=path.read_bytes();g=json.loads(raw)
     scale=g['m_per_px'];c=np.array(g['center_px']);n=len(c)
     curve=CubicSpline(np.arange(n+1),np.r_[c,c[:1]],bc_type='periodic');d=curve(np.arange(n),1);dd=curve(np.arange(n),2);speed=np.linalg.norm(d,axis=1);normal=np.c_[-d[:,1],d[:,0]]/speed[:,None]
     width_inset=width_m/2+margin_m
@@ -36,7 +38,7 @@ def track_for_width(width_m=1.4,margin_m=.1):
         line=LineString(ring.coords)
         return (np.array([line.interpolate(t).coords[0] for t in np.linspace(0,line.length,n,endpoint=False)])-origin)*scale
     left=ring_points(corridor.exterior);right=ring_points(corridor.interiors[0])
-    tree=ET.parse(ROOT/'tracks/nanjing/nanjing.xml');root=tree.getroot();root.set('name','nanjing-manual-smooth-v2')
+    tree=ET.parse(ROOT/'tracks/nanjing/nanjing.xml');root=tree.getroot();root.set('name',folder.name+'-manual-smooth-v2')
     root.find('header/track_length').text=repr(float(length))
     for key in ['L2_error_left','L2_error_right','max_error_left','max_error_right']:root.find('header/'+key).text='0'
     for key in ['origin_longitude','origin_latitude','reference_latitude']:root.find('GPS_parameters/'+key).text='0'
@@ -47,5 +49,5 @@ def track_for_width(width_m=1.4,margin_m=.1):
     for name,p in [('centerline',xy),('left_boundary',left),('right_boundary',right),('left_measured_boundary',left),('right_measured_boundary',right)]:
         for i,axis in enumerate(['x','y']):put(name+'/'+axis,p[:,i])
     xml=ET.tostring(root,encoding='utf-8',xml_declaration=True)
-    meta=dict(id='nanjing',name=g['source']['name'],track_length_m=float(length),m_per_px=scale,origin_px=origin.tolist(),image_size=[1000,707],status='image-derived-estimate',vehicle_envelope_m=width_m,safety_margin_per_side_m=margin_m,inset_per_side_m=inset,width_inset_per_side_m=width_inset,discretization_guard_per_side_m=discretization_guard,minimum_corridor_width_m=float(min(wl+wr)),calibration=g['calibration'],direction=g['source']['direction'],boundary_revision='manual-smooth-v2',maximum_coordinate_fold_repair_m=0.,boundary_sampling='display rings sampled independently; nl/nr are normal intersections with the same corridor',kerb_policy=g['boundary_trace']['kerb_policy'],export_method='manual smooth road/kerb trace; Euclidean physical-road inset; native XML adapter',geometry_sha256=hashlib.sha256(raw).hexdigest(),xml_sha256=hashlib.sha256(xml).hexdigest())
+    meta=dict(id=folder.name,name=g['source']['name'],track_length_m=float(length),m_per_px=scale,origin_px=origin.tolist(),image_size=g.get('image_size',[1000,707]),status='image-derived-estimate',vehicle_envelope_m=width_m,safety_margin_per_side_m=margin_m,inset_per_side_m=inset,width_inset_per_side_m=width_inset,discretization_guard_per_side_m=discretization_guard,minimum_corridor_width_m=float(min(wl+wr)),calibration=g['calibration'],direction=g['source']['direction'],boundary_revision='manual-smooth-v2',maximum_coordinate_fold_repair_m=0.,boundary_sampling='display rings sampled independently; nl/nr are normal intersections with the same corridor',kerb_policy=g['boundary_trace']['kerb_policy'],export_method='manual smooth road/kerb trace; Euclidean physical-road inset; native XML adapter',geometry_sha256=hashlib.sha256(raw).hexdigest(),xml_sha256=hashlib.sha256(xml).hexdigest())
     return xml,meta

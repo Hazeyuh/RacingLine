@@ -11,10 +11,10 @@
 ```sh
 brew install gcc
 ./tools/setup.sh
-./tools/start.sh
+./racingline
 ```
 
-打开 http://127.0.0.1:8765 。更换端口可运行 `./tools/start.sh 8766`。运行数据保存到 `runs/`，不进入 Git。原生依赖按 [固定提交](docs/upstream-versions.json) 下载到 `upstream/`；构建脚本应用发动机和迭代导出补丁。Linux 构建尚未验证。
+脚本自动打开 http://127.0.0.1:8765 。macOS 可双击 `RacingLine.command` 使用开关菜单。关闭终端不影响后台；用 `./racingline stop` 关闭、`./racingline status` 查看状态、`./racingline restart` 重启。更换端口用 `./racingline start --port 8766`。原 `tools/start.sh` 保留为前台调试入口。运行数据保存到 `runs/`，不进入 Git。原生依赖按 [固定提交](docs/upstream-versions.json) 下载到 `upstream/`；构建脚本应用发动机和迭代导出补丁。Linux 构建尚未验证。
 
 ## 使用
 
@@ -35,6 +35,12 @@ brew install gcc
 南京赛道由用户提供图片描绘并标定，参考长度约 618.55 m。道路边界包含识别出的路肩，排除轮胎墙与维修区；车宽的一半和安全余量从道路两侧收缩，约束整车空间。弯道速度同时受几何、轮胎与动力模型影响。图像比例和边界为估计值，尚待现场尺寸与速度数据复核。
 
 第三方原始地图图片、卫星截图和 Honda PDF 不随仓库分发；仓库包含求解所需的数值几何及近似扭矩读数。没有原图也能运行预置赛道与结果展示。可将自有或已获授权的图片放入 `赛道图片和卫星图对照/赛道图.jpg` 和 `卫星图对照.png`，启用原图叠加与标定工具。
+
+## 从图片或手绘添加赛道
+
+附上赛道图、卫星图或数位板手绘图，复制 [赛道接入 Agent prompt](docs/prompts/add-track.md)。手绘可以是一条闭合中心线加指定路宽，也可以画内外两条边界；用标注长度的比例尺自行定标。Agent 整理描点 JSON，通用脚本生成几何、预览、XML 与元数据，重启后自动进入赛道列表。
+
+完整命令与约定见 [本地入口与赛道接入](docs/add-track.md)，输入例子在 `tracks/templates/tablet-trace.json`。附带“手绘模板 · 椭圆”已完成原生求解验证。
 
 ## 开发与引用
 

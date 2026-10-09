@@ -9,14 +9,17 @@ from tracks import TRACK_PATHS,track_info
 from nanjing import track_for_width
 from iterations import read_frames,scene
 from vehicles import PRESETS,CURVES,vehicle_config
-LOCK=threading.Lock(); ACTIVE=None; PROCESSES={}; PAUSES={}; PAUSED_AT={}
+LOCK=threading.Lock(); ACTIVE=None; PROCESSES={}; PAUSES={}; PAUSED_AT={}; SHUTTING_DOWN=False
 
 def stop_children():
+    global SHUTTING_DOWN
+    SHUTTING_DOWN=True
     with LOCK:
         for proc in list(PROCESSES.values()):
             if proc.poll() is None:
                 proc.send_signal(signal.SIGCONT)
                 proc.terminate()
+                write_json(ROOT/'runs'/next(k for k,v in PROCESSES.items() if v is proc)/'status.json',dict(status='failed',error='后台停止，求解已中断'))
 atexit.register(stop_children)
 
 def run_dir(key):
@@ -49,11 +52,13 @@ def solve_job(path):
                     log.write(chunk); log.flush()
             finally: os.close(master)
             proc.wait()
+        if SHUTTING_DOWN:return
         if (path/'result.json').exists():
             result=json.loads((path/'result.json').read_text());result['paused_s']=PAUSES.get(path.name,0);result['active_elapsed_s']=max(0,result['elapsed_s']-result['paused_s']);write_json(path/'result.json',result)
         ok=proc.returncode==0 and (path/'result.json').exists()
         write_json(path/'status.json',dict(status='succeeded' if ok else 'failed',returncode=proc.returncode))
-    except Exception as e: write_json(path/'status.json',dict(status='failed',error=str(e)))
+    except Exception as e:
+        if not SHUTTING_DOWN:write_json(path/'status.json',dict(status='failed',error=str(e)))
     finally:
         with LOCK: ACTIVE=None;PROCESSES.pop(path.name,None);PAUSED_AT.pop(path.name,None)
 
@@ -64,6 +69,7 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         path=urlparse(self.path).path
         try:
+            if path=='/api/health':return self.json(dict(project_root=str(ROOT),pid=os.getpid(),active=ACTIVE))
             if path=='/api/state':
                 runs=[status(p) for p in sorted((ROOT/'runs').glob('*/config.json'),key=lambda p:p.stat().st_mtime,reverse=True) for p in [p.parent]]
                 return self.json(dict(tracks=[track_info(k) for k in TRACK_PATHS if TRACK_PATHS[k].exists()],defaults=DEFAULTS,vehicles=PRESETS,engine_curves=CURVES,runs=runs,ready=bool(list((UPSTREAM/'build/lib').glob('*fastestlapc*.dylib'))),active=ACTIVE,calibration=json.loads((ROOT/'tracks/calibration.json').read_text())))
@@ -102,7 +108,7 @@ class Handler(SimpleHTTPRequestHandler):
             if path=='/api/run':
                 p,vehicle=vehicle_config(data);track=data.get('track','nanjing');meta=track_info(track)
                 custom_xml=None
-                if track=='nanjing':custom_xml,meta=track_for_width(vehicle['vehicle_width_m'])
+                if (TRACK_PATHS[track].parent/'geometry.json').exists():custom_xml,meta=track_for_width(vehicle['vehicle_width_m'],track_folder=TRACK_PATHS[track].parent)
                 if not list((UPSTREAM/'build/lib').glob('*fastestlapc*.dylib')): return self.json({'error':'Fastest-lap 尚未编译完成'},409)
                 with LOCK:
                     if ACTIVE: return self.json({'error':'已有实验在求解，请等待完成'},409)
@@ -110,7 +116,7 @@ class Handler(SimpleHTTPRequestHandler):
                     write_json(folder/'config.json',dict(params=p,vehicle=vehicle,record_iterations=bool(data.get('record_iterations',False)),name=str(data.get('name','实验'))[:80],created=time.strftime('%Y-%m-%d %H:%M:%S'),track=track,track_metadata=meta))
                     if custom_xml is not None:(folder/'track.xml').write_bytes(custom_xml)
                     else:shutil.copyfile(TRACK_PATHS[track],folder/'track.xml')
-                    if track=='nanjing':shutil.copyfile(ROOT/'tracks/nanjing/geometry.json',folder/'geometry.json')
+                    if (TRACK_PATHS[track].parent/'geometry.json').exists():shutil.copyfile(TRACK_PATHS[track].parent/'geometry.json',folder/'geometry.json')
                     write_json(folder/'status.json',{'status':'running'})
                 threading.Thread(target=solve_job,args=(folder,),daemon=True).start();return self.json({'id':key})
             if path=='/api/calibration':
@@ -126,6 +132,11 @@ class Handler(SimpleHTTPRequestHandler):
         except (ValueError,KeyError,TypeError,OverflowError) as e: self.json({'error':str(e)},400)
     def log_message(self,*args): pass
 if __name__=='__main__':
+    def shutdown(signum,frame):
+        global SHUTTING_DOWN
+        SHUTTING_DOWN=True
+        raise SystemExit(0)
+    signal.signal(signal.SIGTERM,shutdown)
     port=int(sys.argv[1]) if len(sys.argv)>1 else 8765
     print(f'RacingLine http://127.0.0.1:{port}',flush=True)
     (ROOT/'runs').mkdir(exist_ok=True)
